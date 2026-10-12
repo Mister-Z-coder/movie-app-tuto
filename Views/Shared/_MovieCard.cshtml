@@ -21,7 +21,9 @@
                 <span class="badge @couleurNote">@Model.Note/10</span>
             </div>
             <a class="btn btn-outline-primary btn-sm mt-auto"
-               asp-controller="Movies" asp-action="Details" asp-route-id="@Model.Id">Voir la fiche</a>
+asp-controller="Movies" asp-action="Details"
+asp-route-id="@Model.Id" asp-route-slug="@Model.Titre.ToSlug()">Voir la 
+fiche</a>
         </div>
     </div>
 </div>

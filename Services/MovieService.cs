@@ -88,4 +88,11 @@ movie.Id);
         _logger.LogInformation("Film supprimé : {Id}", id);
         return true;
     }
+    public Task<List<Movie>> MemeGenreAsync(int genreId, int exclureId, int 
+nombre) =>
+_context.Movies.Include(m => m.Genre).AsNoTracking()
+.Where(m => m.GenreId == genreId && m.Id != exclureId)
+.OrderByDescending(m => m.Note)
+.Take(nombre)
+.ToListAsync();
 }

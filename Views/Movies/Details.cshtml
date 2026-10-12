@@ -1,0 +1,54 @@
+@model MovieDetailsViewModel
+@{
+    var f = Model.Film;
+    var affiche = string.IsNullOrWhiteSpace(f.AfficheUrl) ?
+    "https://placehold.co/400x600?text=Sans+affiche" : f.AfficheUrl;
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Catalogue</a></li>
+        <li class="breadcrumb-item active">@f.Titre</li>
+    </ol>
+</nav>
+<div class="row g-4">
+    <div class="col-md-4">
+        <img src="@affiche" alt="Affiche de @f.Titre" class="img-fluid 
+rounded shadow" />
+    </div>
+    <div class="col-md-8">
+        <h1>@f.Titre <small class="text-muted fs-4">(@f.DateSortie.Year)
+</small></h1>
+        <p>
+            <span class="badge bg-secondary">@f.Genre?.Nom</span>
+            <span class="badge bg-success">@f.Note/10</span>
+        </p>
+        <dl class="row">
+            <dt class="col-sm-4">@Html.DisplayNameFor(m => 
+m.Film.Realisateur)</dt>
+            <dd class="col-sm-8">@f.Realisateur</dd>
+            <dt class="col-sm-4">@Html.DisplayNameFor(m => m.Film.DateSortie)
+</dt>
+            <dd class="col-sm-8">@f.DateSortie.ToString("dd/MM/yyyy")</dd>
+            <dt class="col-sm-4">Durée</dt>
+            <dd class="col-sm-8">@Model.DureeFormatee</dd>
+            <dt class="col-sm-4">@Html.DisplayNameFor(m => m.Film.DateAjout)
+</dt>
+            <dd class="col-sm-8">@f.DateAjout.ToString("dd/MM/yyyy HH:mm")
+</dd>
+        </dl>
+        <p class="lead">@f.Synopsis</p>
+        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@f.Id">Modifier</a>
+        <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@f.Id">Supprimer</a>
+        <a class="btn btn-link" asp-action="Index">Retour au catalogue</a>
+    </div>
+</div>
+@if (Model.MemeGenre.Any())
+{
+    <h2 class="h4 mt-5">Dans le même genre</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var autre in Model.MemeGenre)
+        {
+            <partial name="_MovieCard" model="autre" />
+        }
+    </div>
+}

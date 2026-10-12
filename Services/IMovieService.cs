@@ -10,4 +10,5 @@ Task<List<Genre>> GetGenresAsync();
 Task<Movie> CreerAsync(Movie movie);
 Task<bool> ModifierAsync(Movie movie);
 Task<bool> SupprimerAsync(int id);
+Task<List<Movie>> MemeGenreAsync(int genreId, int exclureId, int nombre);
 }
