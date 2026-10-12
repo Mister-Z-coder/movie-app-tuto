@@ -1,8 +1,36 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+// Bloc de code C#
+var heure = DateTime.Now.Hour;
+var salutation = heure < 12 ? "Bonjour" : (heure < 18 ? "Bon après-midi" 
+: "Bonsoir");
+var fonctionnalites = ViewBag.Fonctionnalites as List<string> ?? new 
+List<string>();
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="p-5 mb-4 bg-body-tertiary rounded-3">
+<h1 class="display-5 fw-bold">@salutation et bienvenue !</h1>
+<p class="fs-5">@ViewBag.Slogan</p>
+@* Condition Razor *@
+@if (heure >= 18)
+{
+<p class="text-muted">Parfait pour choisir le film de ce soir.</p>
+}
+else
+{
+<p class="text-muted">Explorez le catalogue en attendant la séance du 
+soir.</p>
+}
+<a class="btn btn-primary btn-lg" asp-controller="Movies" asp
+action="Index">Voir le catalogue</a>
 </div>
+<h2 class="h4">Ce que fait l'application (@fonctionnalites.Count 
+fonctionnalités)</h2>
+<ul>
+@* Boucle Razor *@
+@foreach (var f in fonctionnalites)
+{
+<li>@f</li>
+}
+</ul>
+@* Expression explicite entre parenthèses *@
+<p class="small text-muted">Page générée le 
+@(DateTime.Now.ToString("dd/MM/yyyy à HH:mm")).</p>

@@ -21,7 +21,18 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         _logger.LogInformation("Affichage de la page d'accueil");
-        return View(); // cherche Views/Home/Index.cshtml
+        ViewData["Title"] = "Accueil";
+        ViewBag.Slogan = _settings.Slogan;
+        // ViewData : clé/valeur
+        // ViewBag : propriété dynamique
+        ViewBag.Fonctionnalites = new List<string>
+{
+"Catalogue avec recherche, filtre et pagination",
+"Fiche détaillée de chaque film",
+"Ajout, modification et suppression de films",
+"API REST au format JSON"
+};
+        return View();
     }
     // GET /Home/Bonjour?nom=Jeremie  -> simple chaîne
     public string Bonjour(string nom = "étudiant")
@@ -64,7 +75,7 @@ public class HomeController : Controller
     {
         return View();
     }
-    
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
