@@ -4,7 +4,27 @@
 (@Model.TotalFilms films)</small></h1>
 <a class="btn btn-success" asp-action="Create">+ Ajouter un film</a>
 </div>
-@* Étape 10 : formulaire de recherche ici *@
+<form asp-action="Index" method="get" class="row g-2 mb-4">
+    <div class="col-md-6">
+        <input asp-for="Recherche" class="form-control" placeholder="Titre ou 
+réalisateur..." />
+    </div>
+    <div class="col-md-4">
+        <select asp-for="GenreId" asp-items="Model.Genres" class="form
+select">
+            <option value="">Tous les genres</option>
+        </select>
+    </div>
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </div>
+</form>
+@if (!string.IsNullOrWhiteSpace(Model.Recherche) || Model.GenreId.HasValue)
+{
+    <p class="small">
+        Filtre actif. <a asp-action="Index">Réinitialiser</a>
+    </p>
+}
 @if (!Model.Films.Any())
 {
 <div class="alert alert-info">Aucun film ne correspond à votre recherche.
@@ -19,4 +39,34 @@ else
 }
 </div>
 }
-@* Étape 10 : pagination ici *@
+@if (Model.TotalPages > 1)
+{
+    <nav class="mt-4" aria-label="Pagination">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.APagePrecedente ? "" : "disabled")">
+                <a class="page-link" asp-action="Index"
+                   asp-route-page="@(Model.PageCourante - 1)"
+                   asp-route-recherche="@Model.Recherche"
+                   asp-route-genreId="@Model.GenreId">Précédent</a>
+            </li>
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageCourante ? "active" : 
+"")">
+                    <a class="page-link" asp-action="Index"
+Tutoriel MovieApp — ASP.NET Core MVC de A à Z
+
+ asp-route-page="@i"
+                       asp-route-recherche="@Model.Recherche"
+                       asp-route-genreId="@Model.GenreId">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.APageSuivante ? "" : "disabled")">
+                <a class="page-link" asp-action="Index"
+                   asp-route-page="@(Model.PageCourante + 1)"
+                   asp-route-recherche="@Model.Recherche"
+                   asp-route-genreId="@Model.GenreId">Suivant</a>
+            </li>
+        </ul>
+    </nav>
+}
