@@ -5,6 +5,8 @@ var salutation = heure < 12 ? "Bonjour" : (heure < 18 ? "Bon après-midi"
 : "Bonsoir");
 var fonctionnalites = ViewBag.Fonctionnalites as List<string> ?? new 
 List<string>();
+     
+@model List<Movie> 
 }
 <div class="p-5 mb-4 bg-body-tertiary rounded-3">
 <h1 class="display-5 fw-bold">@salutation et bienvenue !</h1>
@@ -25,6 +27,14 @@ action="Index">Voir le catalogue</a>
 <h2 class="h4">Ce que fait l'application (@fonctionnalites.Count 
 fonctionnalités)</h2>
 <ul>
+<h2 class="h4 mt-4">Derniers films ajoutés</h2>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+@foreach (var film in Model)
+{
+@* Deuxième syntaxe d'appel d'une partielle *@
+@await Html.PartialAsync("_MovieCard", film)
+}
+</div>
 @* Boucle Razor *@
 @foreach (var f in fonctionnalites)
 {

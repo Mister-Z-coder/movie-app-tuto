@@ -1,0 +1,22 @@
+@model MovieIndexViewModel
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h1 class="h3 mb-0">Catalogue <small class="text-muted fs-6">
+(@Model.TotalFilms films)</small></h1>
+<a class="btn btn-success" asp-action="Create">+ Ajouter un film</a>
+</div>
+@* Étape 10 : formulaire de recherche ici *@
+@if (!Model.Films.Any())
+{
+<div class="alert alert-info">Aucun film ne correspond à votre recherche.
+</div>
+}
+else
+{
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+@foreach (var film in Model.Films)
+{
+<partial name="_MovieCard" model="film" />
+}
+</div>
+}
+@* Étape 10 : pagination ici *@

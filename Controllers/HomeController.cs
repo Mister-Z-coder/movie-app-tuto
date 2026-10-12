@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MovieApp.Models;
 using MovieApp.Models.Settings;
+using MovieApp.Services;
 
 namespace MovieApp.Controllers;
 
@@ -11,29 +12,22 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly MovieAppSettings _settings;
     // Injection de dépendances par le constructeur (détaillée à l'Étape 8)
+    private readonly IMovieService _movieService;
     public HomeController(ILogger<HomeController> logger,
-                          IOptions<MovieAppSettings> options)
+    IOptions<MovieAppSettings> options,
+    IMovieService movieService)
     {
         _logger = logger;
         _settings = options.Value;
+        _movieService = movieService;
     }
-    // GET /  ou  /Home  ou  /Home/Index  -> ViewResult
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        _logger.LogInformation("Affichage de la page d'accueil");
-        ViewData["Title"] = "Accueil";
-        ViewBag.Slogan = _settings.Slogan;
-        // ViewData : clé/valeur
-        // ViewBag : propriété dynamique
-        ViewBag.Fonctionnalites = new List<string>
-{
-"Catalogue avec recherche, filtre et pagination",
-"Fiche détaillée de chaque film",
-"Ajout, modification et suppression de films",
-"API REST au format JSON"
-};
-        return View();
+        // ... ViewData / ViewBag de l'Étape 5 inchangés ...
+        var derniers = await _movieService.DerniersAjoutsAsync(3);
+        return View(derniers); // la vue devient fortement typée
     }
+    
     // GET /Home/Bonjour?nom=Jeremie  -> simple chaîne
     public string Bonjour(string nom = "étudiant")
     {

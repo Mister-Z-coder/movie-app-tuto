@@ -1,0 +1,27 @@
+@model Movie
+@{
+    var affiche = string.IsNullOrWhiteSpace(Model.AfficheUrl)
+        ? "https://placehold.co/400x600?text=Sans+affiche"
+        : Model.AfficheUrl;
+    var couleurNote = Model.Note >= 8 ? "bg-success" : (Model.Note >= 5 ? 
+"bg-warning text-dark" : "bg-danger");
+}
+<div class="col">
+    <div class="card h-100 shadow-sm movie-card">
+        <img src="@affiche" class="card-img-top" alt="Affiche de 
+@Model.Titre" />
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title mb-1">@Model.Titre</h5>
+            <p class="card-text small text-muted mb-2">
+                @Model.Realisateur · @Model.DateSortie.Year · 
+@Model.DureeMinutes min
+            </p>
+            <div class="mb-3">
+                <span class="badge bg-secondary">@Model.Genre?.Nom</span>
+                <span class="badge @couleurNote">@Model.Note/10</span>
+            </div>
+            <a class="btn btn-outline-primary btn-sm mt-auto"
+               asp-controller="Movies" asp-action="Details" asp-route-id="@Model.Id">Voir la fiche</a>
+        </div>
+    </div>
+</div>
