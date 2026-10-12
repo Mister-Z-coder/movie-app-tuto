@@ -1,9 +1,17 @@
-using MovieApp.Middlewares;
+using Microsoft.EntityFrameworkCore;
+using MovieApp.Data;
+//using MovieApp.Middlewares;
 using MovieApp.Models.Settings;
 var builder = WebApplication.CreateBuilder(args);
 // CreateBuilder configure déjà : Kestrel, appsettings*.json, variables d'environnement, journalisation console.
 // ===== 1. SERVICES (ancien Startup.ConfigureServices) =====
-builder.Services.AddControllersWithViews(); // active MVC : contrôleurs + vues Razor
+builder.Services.AddControllersWithViews(); // active MVC : contrôleurs + vues 
+var connectionString = 
+builder.Configuration.GetConnectionString("DefaultConnection")
+?? throw new InvalidOperationException("Chaîne de connexion 'DefaultConnection' introuvable.");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+options.UseSqlServer(connectionString));
+// Razor
 builder.Services.Configure<MovieAppSettings>(
     builder.Configuration.GetSection("MovieAppSettings")
 );
